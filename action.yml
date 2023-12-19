@@ -8,7 +8,7 @@ branding:
   color: "red"
 
 inputs:
-  config-path:
+  config_path:
     description: "Path to matreshka config file"
     default: "config/config.yaml"
 
@@ -26,38 +26,18 @@ runs:
       run: |
         echo "tag=$(echo $(git describe --tags))" >> $GITHUB_OUTPUT
 
-    - name: Obtain config tag
+    - name: Obtain tag
       id: config_tag
-      shell:
-
-    - name: Set output
-      id: tag_short
-      shell: bash
-      run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
-
-    - name: Define version tag
-      uses: ASzc/change-string-case-action@v5
-      id: tag
-      with:
-        string: ${{ steps.tag_short.outputs.tag }}
-
-    - name: Login to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        registry: ${{ inputs.private-registry }}
-        username: ${{ secrets.REGISTRY_USER }}
-        password: ${{ secrets.REGISTRY_PWD }}
-
-    - name: Build image to dockerhub
-      shell: bash
-      env:
-        IMAGE_NAME: ${{ steps.owner_name.outputs.lowercase }}/${{ steps.repo_name.outputs.lowercase }}
-        IMAGE_VERSION: ${{ steps.tag.outputs.lowercase }}
+      shell: python
       run: |
-        docker build \
-        -t $IMAGE_NAME:$IMAGE_VERSION \
-        -t $IMAGE_NAME:latest .
+        import json
+        import os
+        import subprocess
+        ### Obtaining github latest tag
+        current_tag = subprocess.run(['git', 'describe', '--tags'], stdout=subprocess.PIPE).stdout
         
-        docker tag $IMAGE_NAME:$IMAGE_VERSION 
-        docker push $IMAGE_NAME:$IMAGE_VERSION
-        docker push $IMAGE_NAME:latest
+        with open(os.environ['INPUT_CONFIG_PATH']) as config_file:
+            config_tag = json.load(config_file)['app_info']['version']
+        
+        if config_tag > current_tag:
+            subprocess.run(['gh', 'release', 'create', config_tag, '--latest', '--target', '"${GITHUB_HEAD_REF}"'])
