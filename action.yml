@@ -1,0 +1,63 @@
+name: "RedSock/TagReleaser"
+description: "Creates tag based on version of matreshka config file "
+
+author: "RedSock"
+
+branding:
+  icon: "git-pull-request"
+  color: "red"
+
+inputs:
+  config-path:
+    description: "Path to matreshka config file"
+    default: "config/config.yaml"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.ref }}
+
+    - name: Obtain current tag
+      id: current_tag
+      shell: bash
+      run: |
+        echo "tag=$(echo $(git describe --tags))" >> $GITHUB_OUTPUT
+
+    - name: Obtain config tag
+      id: config_tag
+      shell:
+
+    - name: Set output
+      id: tag_short
+      shell: bash
+      run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+
+    - name: Define version tag
+      uses: ASzc/change-string-case-action@v5
+      id: tag
+      with:
+        string: ${{ steps.tag_short.outputs.tag }}
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ inputs.private-registry }}
+        username: ${{ secrets.REGISTRY_USER }}
+        password: ${{ secrets.REGISTRY_PWD }}
+
+    - name: Build image to dockerhub
+      shell: bash
+      env:
+        IMAGE_NAME: ${{ steps.owner_name.outputs.lowercase }}/${{ steps.repo_name.outputs.lowercase }}
+        IMAGE_VERSION: ${{ steps.tag.outputs.lowercase }}
+      run: |
+        docker build \
+        -t $IMAGE_NAME:$IMAGE_VERSION \
+        -t $IMAGE_NAME:latest .
+        
+        docker tag $IMAGE_NAME:$IMAGE_VERSION 
+        docker push $IMAGE_NAME:$IMAGE_VERSION
+        docker push $IMAGE_NAME:latest
