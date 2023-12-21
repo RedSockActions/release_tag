@@ -26,11 +26,10 @@ runs:
       run: |
         echo "tag=$(echo $(git describe --tags))" >> $GITHUB_OUTPUT
 
-    - name: Setup Python
-      uses: actions/setup-python@v2.2.2
-      with:
-        python-version: 3.8
-
+    - name: Install dependencies
+      shell: bash
+      run: |
+        pip install pyyaml
     - name: Obtain tag
       id: config_tag
       env:
