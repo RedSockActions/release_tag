@@ -10,6 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Release
-        uses: RedSockActions/release_tag@v0.0.0-test-13
+        uses: RedSockActions/release_tag@v0.0.0-test-14
         with:
           token: ${{ github.token }}

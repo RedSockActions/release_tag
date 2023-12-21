@@ -39,7 +39,7 @@ runs:
       env:
         INPUT_CONFIG_PATH: ${{ inputs.config_path }}
         GH_TOKEN: ${{ inputs.token }}
-        REF: ${GITHUB_HEAD_REF}
+        REF: $GITHUB_HEAD_REF
         CURRENT_TAG: ${{ steps.current_tag.outputs.tag }}
       shell: python
       run: |
