@@ -39,8 +39,8 @@ runs:
       env:
         INPUT_CONFIG_PATH: ${{ inputs.config_path }}
         GH_TOKEN: ${{ inputs.token }}
-        REF: ${{ github.head_ref }}
         CURRENT_TAG: ${{ steps.current_tag.outputs.tag }}
+        REF: ${{ github.head_ref }}
       shell: python
       run: |
         import yaml
@@ -57,5 +57,5 @@ runs:
         print('config tag', config_tag)
         
         if config_tag > current_tag:
-          print('releasing new tag on ref:', os.environ['REF'])
+          print('releasing new tag')
           subprocess.run(['gh', 'release', 'create', config_tag, '--latest', '--target', os.environ['REF']])
