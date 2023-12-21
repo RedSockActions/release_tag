@@ -28,7 +28,6 @@ runs:
       run: |
         git fetch
         echo "tag=$(echo $(git describe --tags))" >> $GITHUB_OUTPUT
-        echo "ref=${ GITHUB_HEAD_REF }" >> $GITHUB_OUTPUT
 
     - name: Install dependencies
       shell: bash
@@ -40,7 +39,7 @@ runs:
       env:
         INPUT_CONFIG_PATH: ${{ inputs.config_path }}
         GH_TOKEN: ${{ inputs.token }}
-        REF: ${{ steps.current_tag.outputs.ref }}
+        REF: ${{ github.head_ref }}
         CURRENT_TAG: ${{ steps.current_tag.outputs.tag }}
       shell: python
       run: |
