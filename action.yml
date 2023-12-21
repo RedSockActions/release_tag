@@ -37,7 +37,7 @@ runs:
       env:
         INPUT_CONFIG_PATH: ${{ inputs.config_path }}
         GH_TOKEN: ${{ inputs.token }}
-        REF: ${{ GITHUB_HEAD_REF }}
+        REF: ${GITHUB_HEAD_REF}
       shell: python
       run: |
         import yaml
