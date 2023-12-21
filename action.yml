@@ -50,6 +50,7 @@ runs:
           config_tag = yaml.safe_load(config_file)
           config_tag = config_tag['app_info']['version']
           
+        print(current_tag)
         print(config_tag)
         
         if config_tag > current_tag:
