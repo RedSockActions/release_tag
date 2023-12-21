@@ -10,7 +10,7 @@ branding:
 inputs:
   config_path:
     description: "Path to matreshka config file"
-    default: "config/config.yaml"
+    default: "./config/config.yaml"
 
 runs:
   using: "composite"
@@ -37,14 +37,15 @@ runs:
         INPUT_CONFIG_PATH: ${{ inputs.config_path }}
       shell: python
       run: |
-        import json
+        import yaml
         import os
         import subprocess
         ### Obtaining github latest tag
-        current_tag = subprocess.run(['git', 'describe', '--tags'], stdout=subprocess.PIPE).stdout
-        
+        current_tag = str(subprocess.run(['git', 'describe', '--tags'], stdout=subprocess.PIPE).stdout)
+      
         with open(os.environ['INPUT_CONFIG_PATH']) as config_file:
-            config_tag = json.load(config_file)['app_info']['version']
+          config_tag = yaml.safe_load(config_file)
+          config_tag = config_tag['app_info']['version']
         
         if config_tag > current_tag:
-            subprocess.run(['gh', 'release', 'create', config_tag, '--latest', '--target', '"${GITHUB_HEAD_REF}"'])
+          subprocess.run(['gh', 'release', 'create', config_tag, '--latest', '--target', '"${GITHUB_HEAD_REF}"'])
