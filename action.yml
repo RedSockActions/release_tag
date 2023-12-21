@@ -38,13 +38,14 @@ runs:
         INPUT_CONFIG_PATH: ${{ inputs.config_path }}
         GH_TOKEN: ${{ inputs.token }}
         REF: ${GITHUB_HEAD_REF}
+        CURRENT_TAG: ${{ steps.current_tag.outputs.tag }}
       shell: python
       run: |
         import yaml
         import os
         import subprocess
         ### Obtaining github latest tag
-        current_tag = str(subprocess.run(['git', 'describe', '--tags'], stdout=subprocess.PIPE).stdout)
+        current_tag = os.environ['CURRENT_TAG']
       
         with open(os.environ['INPUT_CONFIG_PATH']) as config_file:
           config_tag = yaml.safe_load(config_file)
