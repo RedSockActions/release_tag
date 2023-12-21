@@ -28,6 +28,7 @@ runs:
       run: |
         git fetch
         echo "tag=$(echo $(git describe --tags))" >> $GITHUB_OUTPUT
+        echo "ref=$GITHUB_HEAD_REF" >> $GITHUB_OUTPUT
 
     - name: Install dependencies
       shell: bash
