@@ -4,7 +4,7 @@ description: "Creates tag based on version of matreshka config file "
 author: "RedSock"
 
 branding:
-  icon: "git-pull-request"
+  icon: "flag"
   color: "red"
 
 inputs:
