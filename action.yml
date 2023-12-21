@@ -34,7 +34,7 @@ runs:
     - name: Obtain tag
       id: config_tag
       env:
-        INPUT_CONFIG_PATH: $${{ github.event.inputs.config_path }}
+        INPUT_CONFIG_PATH: ${{ inputs.config_path }}
       shell: python
       run: |
         import json
