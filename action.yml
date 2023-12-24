@@ -31,7 +31,7 @@ runs:
       shell: bash
       run: |
         git fetch
-        echo "tag=$(echo $(git describe --tags))" >> $GITHUB_OUTPUT
+        echo "tag=$(echo $(git describe --tags --abbrev=0))" >> $GITHUB_OUTPUT
 
     - name: Install dependencies
       shell: bash
@@ -48,14 +48,17 @@ runs:
       run: |
         import yaml
         import os
-      
+        
         with open(os.environ['INPUT_CONFIG_PATH']) as config_file:
           config_tag = yaml.safe_load(config_file)
           config_tag = config_tag['app_info']['version']
         
         ### Obtaining github latest tag
         current_tag = os.environ['CURRENT_TAG']
-        
+        if current_tag == '':
+            raise "No current tag"
+        if config_tag == '':
+            raise "No config tag"
         print('current tag is:', current_tag)
         print('config tag is:', config_tag)
         
