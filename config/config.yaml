@@ -1,4 +1,4 @@
 app_info:
   name: matreshka
-  version: "v1.0.6"
+  version: "v1.0.7"
   startup_duration: 10s
