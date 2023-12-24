@@ -41,7 +41,6 @@ runs:
       id: new_tag
       env:
         INPUT_CONFIG_PATH: ${{ inputs.config_path }}
-        GH_TOKEN: ${{ inputs.token }}
         CURRENT_TAG: ${{ steps.current_tag.outputs.tag }}
         REF: ${{ github.head_ref }}
       shell: python
@@ -67,5 +66,7 @@ runs:
 
     - name: Release
       if: ${{ steps.new_tag.outputs.tag }} !== ''
+      env:
+        GH_TOKEN: ${{ inputs.token }}
       shell: bash
       run: gh release create "${{ steps.new_tag.outputs.tag }}" --latest --target "${GITHUB_HEAD_REF}"
