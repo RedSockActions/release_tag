@@ -25,6 +25,7 @@ runs:
       uses: actions/checkout@v4
       with:
         ref: ${{ github.ref }}
+      run: git fetch --prune --unshallow
 
     - name: Obtain current tag
       id: current_tag
