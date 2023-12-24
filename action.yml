@@ -27,12 +27,9 @@ runs:
         ref: ${{ github.ref }}
         fetch-depth: 0
 
-    - name: Get latest release of repository
+    - name: Get Latest Tag
+      uses: WyriHaximus/github-action-get-previous-tag@v1.3.0
       id: current_tag
-      uses: InsonusK/get-latest-release@v1.1.0
-      with:
-        myToken: ${{ inputs.token }}
-        view_top: 1
 
     - name: Install dependencies
       shell: bash
@@ -43,7 +40,7 @@ runs:
       id: new_tag
       env:
         INPUT_CONFIG_PATH: ${{ inputs.config_path }}
-        CURRENT_TAG: ${{ steps.current_tag.outputs.name }}
+        CURRENT_TAG: ${{ steps.current_tag.outputs.tag }}
         REF: ${{ github.head_ref }}
       shell: python
       run: |
