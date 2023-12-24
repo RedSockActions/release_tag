@@ -32,8 +32,7 @@ runs:
       env:
         GH_TOKEN: ${{ inputs.token }}
       run: |
-        git fetch
-        echo "tag=$(echo $(gh release list -L 0))" >> $GITHUB_OUTPUT
+        echo "tag=$(echo $(git describe --tags))" >> $GITHUB_OUTPUT
 
     - name: Install dependencies
       shell: bash
