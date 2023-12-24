@@ -29,6 +29,8 @@ runs:
     - name: Obtain current tag
       id: current_tag
       shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
       run: |
         git fetch
         echo "tag=$(echo $(gh release list -L 0 ))" >> $GITHUB_OUTPUT
