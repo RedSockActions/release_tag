@@ -33,7 +33,7 @@ runs:
         GH_TOKEN: ${{ inputs.token }}
       run: |
         git fetch
-        echo "tag=$(echo $(git describe --tags --abbrev=0 --always))" >> $GITHUB_OUTPUT
+        echo "tag=$(echo $(git ls-remote --tags --sort=committerdate | grep -o 'v.*' | sort -r | head -1))" >> $GITHUB_OUTPUT
 
     - name: Install dependencies
       shell: bash
