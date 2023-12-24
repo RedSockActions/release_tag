@@ -33,7 +33,7 @@ runs:
         GH_TOKEN: ${{ inputs.token }}
       run: |
         git fetch
-        echo "tag=$(echo $(git ls-remote --tags --sort=committerdate | grep -o 'v.*' | sort -r | head -1))" >> $GITHUB_OUTPUT
+        echo "tag=$(echo $(git describe --tags))" >> $GITHUB_OUTPUT
 
     - name: Install dependencies
       shell: bash
@@ -76,4 +76,4 @@ runs:
       env:
         GH_TOKEN: ${{ inputs.token }}
       shell: bash
-      run: gh release create "${{ steps.new_tag.outputs.tag }}" --latest --target "${GITHUB_HEAD_REF}"
+      run: gh release create "${{ steps.new_tag.outputs.tag }}" --latest
