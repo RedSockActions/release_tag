@@ -35,6 +35,8 @@ jobs:
         with:
           token: ${{ github.token }}
           config_path: ./config/config.yaml
+      - name: Read new tag
+        run: echo ${{ steps.release.outputs.tag }}
 ```
 #### token
 This action requires github.token in order to create a tag
@@ -51,5 +53,11 @@ option at action settings -> https://github.com/organizations/{YOUR_ORGANISATION
 It should be like this:
 ![workflow_permissions.png](static%2Fworkflow_permissions.png)
 
+## Output
+Releaser also provides tag as output (if generated)
 
+Example
+```yaml
+
+```
 ###### Made by RedSock with love for coding 
