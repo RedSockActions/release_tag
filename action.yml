@@ -15,7 +15,8 @@ inputs:
     description: "github token"
     required: true
 outputs:
-  new_tag:
+  tag:
+    value: ${{ steps.new_tag.outputs.tag }}
     description: "Empty if no new tag has been released"
 runs:
   using: "composite"
@@ -59,8 +60,9 @@ runs:
         print('config tag is:', config_tag)
         
         if config_tag > current_tag:
-          print(f'::set-output name=tag::{config_tag}')
-          print('preparing to release new tag ' + config_tag)
+          # print(f'::set-output name=tag::{config_tag}')
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              print("{0}={1}".format("tag", config_tag), file=f)
         else:
           print(f'current tag ({current_tag}) is greater than config tag ({config_tag})')
 
@@ -70,7 +72,3 @@ runs:
         GH_TOKEN: ${{ inputs.token }}
       shell: bash
       run: gh release create "${{ steps.new_tag.outputs.tag }}" --latest --target "${GITHUB_HEAD_REF}"
-
-    - name: New tag
-      shell: node
-      run: core.setOutput('new_tag', ${{ steps.new_tag.outputs.tag }})
