@@ -61,9 +61,7 @@ runs:
         print('config tag is:', config_tag)
         if config_tag > current_tag:
             with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-                print(f'::set-output name=tag::{config_tag}')
-                # print("{0}={1}".format("tag", config_tag), file=f)
-                # print("{0}={1}".format("is_new_tag", True), file=f)
+                print("{0}={1}".format("tag", config_tag), file=f)
         else:
           print(f'current tag ({current_tag}) is greater than config tag ({config_tag})')
 
