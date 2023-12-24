@@ -26,16 +26,11 @@ runs:
       with:
         ref: ${{ github.ref }}
 
-    - name: Fetching repo
-      shell: bash
-      run: git fetch --prune --unshallow
-
     - name: Obtain current tag
       id: current_tag
       shell: bash
-      env:
-        GH_TOKEN: ${{ inputs.token }}
       run: |
+        git fetch
         echo "tag=$(echo $(git describe --tags))" >> $GITHUB_OUTPUT
 
     - name: Install dependencies
@@ -79,4 +74,4 @@ runs:
       env:
         GH_TOKEN: ${{ inputs.token }}
       shell: bash
-      run: gh release create "${{ steps.new_tag.outputs.tag }}" --latest
+      run: gh release create "${{ steps.new_tag.outputs.tag }}" --latest --target ${{ github.head_ref }}
