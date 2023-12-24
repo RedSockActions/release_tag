@@ -72,5 +72,6 @@ runs:
         GH_TOKEN: ${{ inputs.token }}
       shell: bash
       run: |
-        if [[ "${{ steps.new_tag.outputs.tag }}" == "" ]]; then
-          gh release create "${{ steps.new_tag.outputs.tag }}" --latest --target ${{ github.head_ref }}
+        if [[ "${{ steps.new_tag.outputs.tag }}" != "" ]]; then
+          gh release create "${{ steps.new_tag.outputs.tag }}" --latest --target ${{ github.head_ref }};
+        fi
