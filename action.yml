@@ -27,11 +27,12 @@ runs:
         ref: ${{ github.ref }}
         fetch-depth: 0
 
-    - name: Obtain current tag
+    - name: Get latest release of repository
       id: current_tag
-      shell: bash
-      run: |
-        echo "tag=$(echo $(git describe --tags))" >> $GITHUB_OUTPUT
+      uses: InsonusK/get-latest-release@v1.1.0
+      with:
+        myToken: ${{ inputs.token }}
+        view_top: 1
 
     - name: Install dependencies
       shell: bash
@@ -42,7 +43,7 @@ runs:
       id: new_tag
       env:
         INPUT_CONFIG_PATH: ${{ inputs.config_path }}
-        CURRENT_TAG: ${{ steps.current_tag.outputs.tag }}
+        CURRENT_TAG: ${{ steps.current_tag.outputs.name }}
         REF: ${{ github.head_ref }}
       shell: python
       run: |
