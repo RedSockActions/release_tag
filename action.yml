@@ -31,7 +31,7 @@ runs:
       shell: bash
       run: |
         git fetch
-        echo "tag=$(echo $(git describe --tags --abbrev=0))" >> $GITHUB_OUTPUT
+        echo "tag=$(echo $(gh release list -L 0))" >> $GITHUB_OUTPUT
 
     - name: Install dependencies
       shell: bash
