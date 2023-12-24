@@ -14,7 +14,9 @@ inputs:
   token:
     description: "github token"
     required: true
-
+outputs:
+  new_tag:
+    description: "Empty if no new tag has been released"
 runs:
   using: "composite"
   steps:
