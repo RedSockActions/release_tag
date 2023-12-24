@@ -25,12 +25,12 @@ runs:
       uses: actions/checkout@v4
       with:
         ref: ${{ github.ref }}
+        fetch-depth: 0
 
     - name: Obtain current tag
       id: current_tag
       shell: bash
       run: |
-        git fetch
         echo "tag=$(echo $(git describe --tags))" >> $GITHUB_OUTPUT
 
     - name: Install dependencies
