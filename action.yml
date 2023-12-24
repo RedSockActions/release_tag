@@ -70,3 +70,6 @@ runs:
         GH_TOKEN: ${{ inputs.token }}
       shell: bash
       run: gh release create "${{ steps.new_tag.outputs.tag }}" --latest --target "${GITHUB_HEAD_REF}"
+
+    - name: New tag
+      run: core.setOutput('new_tag', ${{ steps.new_tag.outputs.tag }})
