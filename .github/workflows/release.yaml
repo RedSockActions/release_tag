@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Release
         id: release
-        uses: RedSockActions/release_tag@064196ae5e9e3f06981583cecdc968c4c1f8e7cb
+        uses: RedSockActions/release_tag@15a89fc00810b1314188509da80fd56ce8895c53
         with:
           token: ${{ github.token }}
       - name: Read new tag
