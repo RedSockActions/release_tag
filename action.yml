@@ -59,18 +59,18 @@ runs:
             raise "No config tag"
         print('current tag is:', current_tag)
         print('config tag is:', config_tag)
-        with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-          if config_tag > current_tag:
-            # print(f'::set-output name=tag::{config_tag}')
-                print("{0}={1}".format("tag", config_tag), file=f)
-                print("{0}={1}".format("is_new_tag", True), file=f)
-          else:
-            print(f'current tag ({current_tag}) is greater than config tag ({config_tag})')
-            print("{0}={1}".format("is_new_tag", False), file=f)
+        if config_tag > current_tag:
+            with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+                print(f'::set-output name=tag::{config_tag}')
+                # print("{0}={1}".format("tag", config_tag), file=f)
+                # print("{0}={1}".format("is_new_tag", True), file=f)
+        else:
+          print(f'current tag ({current_tag}) is greater than config tag ({config_tag})')
 
     - name: Release
-      if: ${{ steps.new_tag.outputs.is_new_tag }} == true
       env:
         GH_TOKEN: ${{ inputs.token }}
       shell: bash
-      run: gh release create "${{ steps.new_tag.outputs.tag }}" --latest --target ${{ github.head_ref }}
+      run: |
+        if [[ "${{ steps.new_tag.outputs.tag }}" == "" ]]; then
+          gh release create "${{ steps.new_tag.outputs.tag }}" --latest --target ${{ github.head_ref }}
