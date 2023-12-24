@@ -71,5 +71,5 @@ runs:
       shell: bash
       run: |
         if [[ "${{ steps.new_tag.outputs.tag }}" != "" ]]; then
-          gh release create "${{ steps.new_tag.outputs.tag }}" --latest --target ${{ github.head_ref }};
+          gh release create "${{ steps.new_tag.outputs.tag }}" --latest;
         fi
