@@ -35,6 +35,7 @@ runs:
       shell: bash
       run: |
         pip install pyyaml
+        pip install packaging
 
     - name: Obtain tag
       id: new_tag
@@ -46,6 +47,7 @@ runs:
       run: |
         import yaml
         import os
+        from packaging import version
         
         with open(os.environ['INPUT_CONFIG_PATH']) as config_file:
           config_tag = yaml.safe_load(config_file)
@@ -57,9 +59,11 @@ runs:
             raise "No current tag"
         if config_tag == '':
             raise "No config tag"
+        
         print('current tag is:', current_tag)
         print('config tag is:', config_tag)
-        if config_tag > current_tag:
+        
+        if version.parse(config_tag) > version.parse(current_tag):
             with open(os.environ["GITHUB_OUTPUT"], "a") as f:
                 print("{0}={1}".format("tag", config_tag), file=f)
         else:
