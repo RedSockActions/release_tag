@@ -28,7 +28,7 @@ runs:
         fetch-depth: 0
 
     - name: Get Latest Tag
-      uses: WyriHaximus/github-action-get-previous-tag@v1.3.0
+      uses: WyriHaximus/github-action-get-previous-tag@v1.4.0
       id: current_tag
 
     - name: Install dependencies
