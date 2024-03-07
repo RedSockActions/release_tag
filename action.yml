@@ -67,7 +67,7 @@ runs:
             with open(os.environ["GITHUB_OUTPUT"], "a") as f:
                 print("{0}={1}".format("tag", config_tag), file=f)
         else:
-          print(f'current tag ({current_tag}) is greater than config tag ({config_tag})')
+          print(f'current tag ({current_tag}) is greater or equal to config tag ({config_tag})')
 
     - name: Release
       env:
