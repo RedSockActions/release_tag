@@ -56,7 +56,7 @@ runs:
         ### Obtaining github latest tag
         current_tag = os.environ['CURRENT_TAG']
         if current_tag == '':
-            raise "No current tag"
+           current_tag = 'not presented'
         if config_tag == '':
             raise "No config tag"
         
