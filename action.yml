@@ -63,7 +63,7 @@ runs:
         print('current tag is:', current_tag)
         print('config tag is:', config_tag)
         
-        if version.parse(config_tag) > version.parse(current_tag):
+        if current_tag == '' or version.parse(config_tag) > version.parse(current_tag):
             with open(os.environ["GITHUB_OUTPUT"], "a") as f:
                 print("{0}={1}".format("tag", config_tag), file=f)
         else:
