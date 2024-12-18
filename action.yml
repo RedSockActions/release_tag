@@ -76,4 +76,8 @@ runs:
       run: |
         if [[ "${{ steps.new_tag.outputs.tag }}" != "" ]]; then
           gh release create "${{ steps.new_tag.outputs.tag }}" --latest;
+          echo "New tag ${{ steps.new_tag.outputs.tag }} has been created" >> $GITHUB_STEP_SUMMARY
+        else 
+          echo "No new tag in config" >> $GITHUB_STEP_SUMMARY
         fi
+        
